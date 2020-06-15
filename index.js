@@ -26,7 +26,7 @@ var Server = require('node-ssdp').Server
 });
 
 // http Server
-const http = require('http');
+// const http = require('http');
 
 // File System
 fs = require('fs');
@@ -203,23 +203,23 @@ function startSSDP(user_code) {
         }
     });
 
-    http.createServer((request, response) => {
-        return request
-            .on('error', (err) => {
-                console.error(err);
-            })
-            .on('data', (data) => {
-                console.log(data);
-            })
-            .on('end', () => {
-                response.on('error', (err) => {
-                    console.error(err);
-                });
-                response.statusCode = 200;
-                response.setHeader('Content-Type', 'application/xml');
-                response.end(string);
-            });
-    }).listen(8080);
+    // http.createServer((request, response) => {
+    //     return request
+    //         .on('error', (err) => {
+    //             console.error(err);
+    //         })
+    //         .on('data', (data) => {
+    //             console.log(data);
+    //         })
+    //         .on('end', () => {
+    //             response.on('error', (err) => {
+    //                 console.error(err);
+    //             });
+    //             response.statusCode = 200;
+    //             response.setHeader('Content-Type', 'application/xml');
+    //             response.end(string);
+    //         });
+    // }).listen(8080);
 
 }
 
