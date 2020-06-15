@@ -21,7 +21,8 @@ const speechClient = new speech.SpeechClient();
 var Server = require('node-ssdp').Server
     , ssdpServer = new Server({
     location: {
-        port: 8080
+        port: 8080,
+        path: '/'
     }
 });
 
