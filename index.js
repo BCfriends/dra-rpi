@@ -21,29 +21,12 @@ const speechClient = new speech.SpeechClient();
 var Server = require('node-ssdp').Server
     , ssdpServer = new Server({
     location: {
-        port: 8080,
-        path: '/user_code.xml'
+        port: 8080
     }
 });
 
 // http Server
 const http = require('http');
-http.createServer((request, response) => {
-    return request
-        .on('error', (err) => {
-            console.error(err);
-        })
-        .on('data', (data) => {
-            console.log(data);
-        })
-        .on('end', () => {
-            response.on('error', (err) => {
-                console.error(err);
-            });
-            response.statusCode = 200;
-            response.setHeader('Content-Type', 'application/xml');
-        });
-}).listen(8080);
 
 // File System
 fs = require('fs');
@@ -219,6 +202,25 @@ function startSSDP(user_code) {
             throw error
         }
     });
+
+    http.createServer((request, response) => {
+        return request
+            .on('error', (err) => {
+                console.error(err);
+            })
+            .on('data', (data) => {
+                console.log(data);
+            })
+            .on('end', () => {
+                response.on('error', (err) => {
+                    console.error(err);
+                });
+                response.statusCode = 200;
+                response.setHeader('Content-Type', 'application/xml');
+                response.end(string);
+            });
+    }).listen(8080);
+
 }
 
 
