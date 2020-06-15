@@ -213,7 +213,13 @@ function ssdp(user_code) {
     });
 
     // start the server
-    ssdpServer.start();
+    ssdpServer.start()
+        .catch(e => {
+            console.log('Failed to start server:', e)
+        })
+        .then(() => {
+            console.log('Server started.')
+        })
 
     process.on('exit', function(){
         ssdpServer.stop() // advertise shutting down and stop listening
