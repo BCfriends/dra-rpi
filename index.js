@@ -191,7 +191,7 @@ function GSrecord() {
 
 function ssdp(user_code) {
     console.log(user_code);
-    fs.writeFile('/user_code.xml', user_code, 'utf8', function(error, data){
+    fs.writeFile('./user_code.xml', user_code, 'utf8', function(error, data){
         if (error) {
             throw error
         }
