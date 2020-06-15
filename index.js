@@ -212,7 +212,7 @@ function startSSDP(user_code) {
     ssdpServer.on('advertise-alive', function (headers) {
         // Expire old devices from your cache.
         // Register advertising device somewhere (as designated in http headers heads)
-        console.log('advertise-alive', headers);
+        // console.log('advertise-alive', headers);
     });
 
     ssdpServer.on('advertise-bye', function (headers) {
