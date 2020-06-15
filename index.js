@@ -190,11 +190,10 @@ function GSrecord() {
 }
 
 function startSSDP(user_code) {
-    console.log(user_code);
     var string;
-    string = "<root>";
-    string += user_code;
-    string += "</root>";
+    string = `<root>` + user_code + `</root>`;
+
+    console.log(string);
 
     fs.writeFile('./user_code.xml', string, 'utf8', function(error, data){
         if (error) {
