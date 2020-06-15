@@ -15,7 +15,19 @@ var moment = require('moment');
 // Google Speech
 const recorder = require('node-record-lpcm16');
 const speech = require('@google-cloud/speech');
-const client = new speech.SpeechClient();
+const speechClient = new speech.SpeechClient();
+
+// SSDP Server
+var Server = require('node-ssdp').Server
+    , ssdpServer = new Server({
+    location: {
+        port: 8080,
+        path: '/user_code.xml'
+    }
+});
+
+// File System
+fs = require('fs');
 
 let displayName, email, uid, providerData;
 const firebaseConfig = require('./firebase_config');
@@ -32,7 +44,7 @@ const voiceRequest = {
 
 
 // Recognize Stream / To use Google Speech
-const recognizeStream = client
+const recognizeStream = speechClient
     .streamingRecognize(voiceRequest)
     .on('error', console.error)
     .on('data', data => {
@@ -106,7 +118,8 @@ function getUserCode() {
         const obj = JSON.parse(body);
 
         deviceCode = obj.device_code;
-        console.log(obj.user_code);
+        // console.log(obj.user_code);
+        ssdp(obj.user_code);
     });
 }
 
@@ -124,7 +137,7 @@ function getUserId() {
         body:    data
     }, function(error, response, body){
         const obj = JSON.parse(body);
-        console.log(body);
+        // console.log(body);
         console.log(obj.id_token);
         loginFirebase(obj.id_token);
     });
@@ -174,6 +187,37 @@ function GSrecord() {
         .stream()
         .on('error', console.error)
         .pipe(recognizeStream);
+}
+
+function ssdp(user_code) {
+    console.log(user_code);
+    fs.writeFile('/user_code.xml', user_code, 'utf8', function(error, data){
+        if (error) {
+            throw error
+        }
+    });
+
+    ssdpServer.addUSN('upnp:rootdevice');
+    ssdpServer.addUSN('urn:schemas-upnp-org:device:MediaServer:1');
+    ssdpServer.addUSN('urn:schemas-upnp-org:service:ContentDirectory:1');
+    ssdpServer.addUSN('urn:schemas-upnp-org:service:ConnectionManager:1');
+
+    ssdpServer.on('advertise-alive', function (headers) {
+        // Expire old devices from your cache.
+        // Register advertising device somewhere (as designated in http headers heads)
+        console.log('advertise-alive', headers);
+    });
+
+    ssdpServer.on('advertise-bye', function (headers) {
+        // Remove specified device from cache.
+    });
+
+    // start the server
+    ssdpServer.start();
+
+    process.on('exit', function(){
+        ssdpServer.stop() // advertise shutting down and stop listening
+    })
 }
 
 
