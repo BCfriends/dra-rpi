@@ -194,7 +194,7 @@ function GSrecord() {
 
 function startSSDP(user_code) {
     var string;
-    string = `<root>` + user_code + `</root>`;
+    string = `<root>` + `<key>` + user_code + `</key>` + `</root>`;
 
     console.log(string);
 
