@@ -203,23 +203,57 @@ function startSSDP(user_code) {
         }
     });
 
-    // http.createServer((request, response) => {
-    //     return request
-    //         .on('error', (err) => {
-    //             console.error(err);
-    //         })
-    //         .on('data', (data) => {
-    //             console.log(data);
-    //         })
-    //         .on('end', () => {
-    //             response.on('error', (err) => {
-    //                 console.error(err);
-    //             });
-    //             response.statusCode = 200;
-    //             response.setHeader('Content-Type', 'application/xml');
-    //             response.end(string);
-    //         });
-    // }).listen(8080);
+    ssdpServer.addUSN('upnp:rootdevice');
+    ssdpServer.addUSN('urn:schemas-upnp-org:device:MediaServer:1');
+    ssdpServer.addUSN('urn:schemas-upnp-org:service:ContentDirectory:1');
+    ssdpServer.addUSN('urn:schemas-upnp-org:service:ConnectionManager:1');
+
+    ssdpServer.on('advertise-alive', function (headers) {
+        // Expire old devices from your cache.
+        // Register advertising device somewhere (as designated in http headers heads)
+        console.log('advertise-alive', headers);
+    });
+
+    ssdpServer.on('advertise-bye', function (headers) {
+        // Remove specified device from cache.
+    });
+
+    // start the server
+    ssdpServer.start()
+        .catch(e => {
+            console.log('Failed to start server:', e)
+        })
+        .then(() => {
+            console.log('Server started.')
+        })
+
+    process.on('exit', function(){
+        ssdpServer.stop() // advertise shutting down and stop listening
+    })
+
+    http.createServer((request, response) => {
+        return request
+            .on('error', (err) => {
+                console.error(err);
+            })
+            .on('data', (data) => {
+                console.log(data);
+            })
+            .on('end', () => {
+                response.on('error', (err) => {
+                    console.error(err);
+                });
+                fs.readFile('user_code.xml', function(err, data) {
+                    if (err) {
+                        // 만약 file read 에 실패했을 경우 console.log('file read error');
+                    } else {
+                        // file read 에 성공하면 data 에 .html 파일의 내용이 전달됨
+                        response.writeHead(200, {'Content-Type': 'application/xml'});
+                        response.end(data);
+                    }
+                });
+                });
+    }).listen(8080);
 
 }
 
