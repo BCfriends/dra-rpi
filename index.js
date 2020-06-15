@@ -119,7 +119,7 @@ function getUserCode() {
 
         deviceCode = obj.device_code;
         // console.log(obj.user_code);
-        ssdp(obj.user_code);
+        startSSDP(obj.user_code);
     });
 }
 
@@ -189,41 +189,18 @@ function GSrecord() {
         .pipe(recognizeStream);
 }
 
-function ssdp(user_code) {
+function startSSDP(user_code) {
     console.log(user_code);
-    fs.writeFile('./user_code.xml', user_code, 'utf8', function(error, data){
+    var string;
+    string = "<root>";
+    string += user_code;
+    string += "</root>";
+
+    fs.writeFile('./user_code.xml', string, 'utf8', function(error, data){
         if (error) {
             throw error
         }
     });
-
-    ssdpServer.addUSN('upnp:rootdevice');
-    ssdpServer.addUSN('urn:schemas-upnp-org:device:MediaServer:1');
-    ssdpServer.addUSN('urn:schemas-upnp-org:service:ContentDirectory:1');
-    ssdpServer.addUSN('urn:schemas-upnp-org:service:ConnectionManager:1');
-
-    ssdpServer.on('advertise-alive', function (headers) {
-        // Expire old devices from your cache.
-        // Register advertising device somewhere (as designated in http headers heads)
-        console.log('advertise-alive', headers);
-    });
-
-    ssdpServer.on('advertise-bye', function (headers) {
-        // Remove specified device from cache.
-    });
-
-    // start the server
-    ssdpServer.start()
-        .catch(e => {
-            console.log('Failed to start server:', e)
-        })
-        .then(() => {
-            console.log('Server started.')
-        })
-
-    process.on('exit', function(){
-        ssdpServer.stop() // advertise shutting down and stop listening
-    })
 }
 
 
