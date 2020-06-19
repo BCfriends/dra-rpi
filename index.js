@@ -5,14 +5,14 @@ const clientSecret = clientConfig.clientSecret;
 const firebaseConfig = clientConfig.firebaseConfig;
 
 // Send Post Data
-var request = require('request');
+const request = require('request');
 const readline = require("readline");
 
 // Firebase Utils
-var firebase = require("firebase/app");
+const firebase = require("firebase/app");
 require("firebase/auth");
 require("firebase/firestore");
-var moment = require('moment');
+const moment = require('moment');
 
 // Google Speech
 const recorder = require('node-record-lpcm16');
@@ -20,7 +20,7 @@ const speech = require('@google-cloud/speech');
 const speechClient = new speech.SpeechClient();
 
 // SSDP Server
-var Server = require('node-ssdp').Server
+const Server = require('node-ssdp').Server
     , ssdpServer = new Server({
     location: {
         port: 8080,
@@ -34,7 +34,7 @@ const http = require('http');
 // File System
 const fs = require('fs');
 
-let displayName, email, uid, providerData;
+let displayName, email, uid, isAnonymous, providerData;
 
 // Request to Google speech
 const voiceRequest = {
