@@ -9,7 +9,7 @@ const request = require('request');
 const readline = require("readline");
 
 // Firebase Utils
-const firebase = require("firebase/app");
+const firebase = require("firebase");
 const moment = require('moment');
 
 // Google Speech
