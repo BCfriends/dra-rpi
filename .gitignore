@@ -1,2 +1,4 @@
-# Project exclude paths
+/package-lock.json
 /node_modules/
+/.idea/
+/clientConfig.js

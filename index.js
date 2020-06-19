@@ -1,6 +1,8 @@
-// Google Sign In ID/Secret
-var clientId = "855808759724-s2j0ru0fa4aj6cgu72p81uk8k7c61n9h.apps.googleusercontent.com";
-var clientSecret = "ClientSecret";
+// import clientConfig.js
+import clientConfig from './clientConfig'
+const clientId = clientConfig.clientId;
+const clientSecret = clientConfig.clientSecret;
+const firebaseConfig = clientConfig.firebaseConfig;
 
 // Send Post Data
 var request = require('request');
@@ -30,10 +32,9 @@ var Server = require('node-ssdp').Server
 const http = require('http');
 
 // File System
-fs = require('fs');
+const fs = require('fs');
 
 let displayName, email, uid, providerData;
-const firebaseConfig = require('./firebase_config');
 
 // Request to Google speech
 const voiceRequest = {
