@@ -10,8 +10,6 @@ const readline = require("readline");
 
 // Firebase Utils
 const firebase = require("firebase/app");
-require("firebase/auth");
-require("firebase/firestore");
 const moment = require('moment');
 
 // Google Speech
