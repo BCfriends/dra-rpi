@@ -25,6 +25,8 @@ const ttsClient = new textToSpeech.TextToSpeechClient();
 
 const player = require('play-sound')(opts = {})
 
+let audio;
+
 // SSDP Server
 const Server = require('node-ssdp').Server
     , ssdpServer = new Server({
@@ -107,6 +109,8 @@ const recognizeStream = speechClient
                 recommendSong();
             } else if (usr.includes("힘들어")) {
                 ttsStart("모든 게 괜찮을 거야.");
+            } else if (usr.includes("그만")) {
+                audio.kill();
             }
         }
     );
@@ -310,7 +314,7 @@ async function ttsStart(text) {
 }
 
 async function recommendSong() {
-    player.play('songs.mp3', function(err){ //temp
+    audio = player.play('songs.mp3', function(err){ //temp
         if (err && !err.killed) throw err
     });
 }
