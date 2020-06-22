@@ -221,7 +221,7 @@ function startSSDP(user_code) {
                     "  </body>\n" +
                     "</response>";
 
-    console.log("인증 코드: " + user_code);
+    console.log("인증 코드: " + user_code + "\n표시된 인증 코드를 앱의 [기기 연결 페이지]에 입력한 뒤, Google로 로그인하세요.\n로그인하셨다면, [Enter] 키를 누르시면 진행합니다.");
 
     fs.writeFile('./user_code.xml', string, 'utf8', function(error, data){
         if (error) {
@@ -263,7 +263,7 @@ function startSSDP(user_code) {
                 console.error(err);
             })
             .on('data', (data) => {
-                console.log(data);
+                // console.log(data);
             })
             .on('end', () => {
                 response.on('error', (err) => {
