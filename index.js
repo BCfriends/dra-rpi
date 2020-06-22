@@ -178,14 +178,15 @@ function loginFirebase(id_token) {
             uid = user.uid;
 
             process.stdout.write(
-                user.uid + "\n"
+                // user.uid + "\n"
+                "로그인됨."
             );
             GSrecord();
         } else {
             // User is signed out.
-            process.stdout.write(
-                "User is signed out\n"
-            );
+            // process.stdout.write(
+            //     "User is signed out\n"
+            // );
         }
     });
 }
@@ -250,7 +251,7 @@ function startSSDP(user_code) {
             console.log('Failed to start server:', e)
         })
         .then(() => {
-            console.log('Server started.')
+            // console.log('Server started.')
         })
 
     process.on('exit', function(){
