@@ -1,16 +1,16 @@
-// Google Sign In ID/Secret
-var clientId = "855808759724-s2j0ru0fa4aj6cgu72p81uk8k7c61n9h.apps.googleusercontent.com";
-var clientSecret = "ClientSecret";
+// import clientConfig.js
+import clientConfig from './clientConfig'
+const clientId = clientConfig.clientId;
+const clientSecret = clientConfig.clientSecret;
+const firebaseConfig = clientConfig.firebaseConfig;
 
 // Send Post Data
-var request = require('request');
+const request = require('request');
 const readline = require("readline");
 
 // Firebase Utils
-var firebase = require("firebase/app");
-require("firebase/auth");
-require("firebase/firestore");
-var moment = require('moment');
+const firebase = require("firebase");
+const moment = require('moment');
 
 // Google Speech
 const recorder = require('node-record-lpcm16');
@@ -27,7 +27,7 @@ const ttsClient = new textToSpeech.TextToSpeechClient();
 const player = require('play-sound')(opts = {})
 
 // SSDP Server
-var Server = require('node-ssdp').Server
+const Server = require('node-ssdp').Server
     , ssdpServer = new Server({
     location: {
         port: 8080,
@@ -38,8 +38,10 @@ var Server = require('node-ssdp').Server
 // http Server
 const http = require('http');
 
-let displayName, email, uid, providerData;
-const firebaseConfig = require('./firebase_config');
+// File System
+const fs = require('fs');
+
+let displayName, email, uid, isAnonymous, providerData;
 
 // Request to Google speech
 const voiceRequest = {
