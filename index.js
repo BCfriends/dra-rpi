@@ -92,12 +92,12 @@ const recognizeStream = speechClient
                 }
 
                 process.stdout.write(
-                    `${depressStatus} \n`
+                    "캘린더에 기록되었습니다.\n"
                 );
 
                 db.collection("users").doc(uid).collection("Records").doc(today).set({
                     depressStatus: depressStatus,
-                    memo: "db test"
+                    memo: usr
                 }).catch(function (error) {
                     console.log(error);
                 }).then(function () {
