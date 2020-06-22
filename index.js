@@ -102,7 +102,11 @@ const recognizeStream = speechClient
                     process.exit(0);
                 });
             } else if (usr.includes("말해")) {
-                ttsStart();
+                ttsStart("hello, world!");
+            } else if (usr.includes("음악 들려줘")) {
+                recommendSong();
+            } else if (usr.includes("요즘 힘들어")) {
+                ttsStart("모든 게 괜찮을 거야.");
             }
         }
     );
@@ -279,9 +283,9 @@ function startSSDP(user_code) {
 
 }
 
-async function ttsStart() {
+async function ttsStart(text) {
     // The text to synthesize
-    const text = 'hello, world!';
+    // const text = 'hello, world!';
 
     // Construct the request
     const request = {
@@ -305,6 +309,11 @@ async function ttsStart() {
     })
 }
 
+async function recommendSong() {
+    player.play('songs.mp3', function(err){ //temp
+        if (err && !err.killed) throw err
+    });
+}
 
 getUserCode();
 
