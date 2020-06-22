@@ -158,7 +158,7 @@ function getUserId() {
     }, function(error, response, body){
         const obj = JSON.parse(body);
         // console.log(body);
-        console.log(obj.id_token);
+        // console.log(obj.id_token);
         loginFirebase(obj.id_token);
     });
 }
@@ -182,14 +182,15 @@ function loginFirebase(id_token) {
             uid = user.uid;
 
             process.stdout.write(
-                user.uid + "\n"
+                // user.uid + "\n"
+                "로그인됨.\n"
             );
             GSrecord();
         } else {
             // User is signed out.
-            process.stdout.write(
-                "User is signed out\n"
-            );
+            // process.stdout.write(
+            //     "User is signed out\n"
+            // );
         }
     });
 }
@@ -225,7 +226,7 @@ function startSSDP(user_code) {
                     "  </body>\n" +
                     "</response>";
 
-    console.log(string);
+    console.log("인증 코드: " + user_code + "\n표시된 인증 코드를 앱의 [기기 연결 페이지]에 입력한 뒤, Google로 로그인하세요.\n로그인하셨다면, [Enter] 키를 누르시면 진행합니다.");
 
     fs.writeFile('./user_code.xml', string, 'utf8', function(error, data){
         if (error) {
@@ -254,7 +255,7 @@ function startSSDP(user_code) {
             console.log('Failed to start server:', e)
         })
         .then(() => {
-            console.log('Server started.')
+            // console.log('Server started.')
         })
 
     process.on('exit', function(){
@@ -267,7 +268,7 @@ function startSSDP(user_code) {
                 console.error(err);
             })
             .on('data', (data) => {
-                console.log(data);
+                // console.log(data);
             })
             .on('end', () => {
                 response.on('error', (err) => {
@@ -306,7 +307,8 @@ async function ttsStart(text) {
     const writeFile = util.promisify(fs.writeFile);
     await writeFile('output.mp3', response.audioContent, 'binary');
 
-    console.log('Audio content written to file: output.mp3');
+    // console.log('Audio content written to file: output.mp3');
+    console.log("Response: " + text);
 
     player.play('output.mp3', function(err){
         if (err) throw err
