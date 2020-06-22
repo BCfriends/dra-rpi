@@ -179,7 +179,7 @@ function loginFirebase(id_token) {
 
             process.stdout.write(
                 // user.uid + "\n"
-                "로그인됨."
+                "로그인됨.\n"
             );
             GSrecord();
         } else {
