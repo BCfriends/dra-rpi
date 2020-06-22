@@ -1,5 +1,5 @@
 // import clientConfig.js
-import clientConfig from './clientConfig'
+const clientConfig = require('./clientConfig');
 const clientId = clientConfig.clientId;
 const clientSecret = clientConfig.clientSecret;
 const firebaseConfig = clientConfig.firebaseConfig;
@@ -102,6 +102,8 @@ const recognizeStream = speechClient
                 }).then(function () {
                     process.exit(0);
                 });
+            } else if (usr.includes("말해")) {
+                ttsStart();
             }
         }
     );
