@@ -304,8 +304,8 @@ async function ttsStart(text) {
 
     console.log('Audio content written to file: output.mp3');
 
-    var audio = player.play('output.mp3', function(err){
-        if (err && !err.killed) throw err
+    player.play('output.mp3', function(err){
+        if (err) throw err
     })
 }
 
