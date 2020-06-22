@@ -103,9 +103,9 @@ const recognizeStream = speechClient
                 });
             } else if (usr.includes("말해")) {
                 ttsStart("hello, world!");
-            } else if (usr.includes("음악 들려줘")) {
+            } else if ((usr.includes("음악") || usr.includes("노래")) && usr.includes("들려")) {
                 recommendSong();
-            } else if (usr.includes("요즘 힘들어")) {
+            } else if (usr.includes("힘들어")) {
                 ttsStart("모든 게 괜찮을 거야.");
             }
         }
