@@ -299,6 +299,10 @@ async function ttsStart() {
     await writeFile('output.mp3', response.audioContent, 'binary');
 
     console.log('Audio content written to file: output.mp3');
+
+    var audio = player.play('output.mp3', function(err){
+        if (err && !err.killed) throw err
+    })
 }
 
 
