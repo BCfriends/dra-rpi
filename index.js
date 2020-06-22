@@ -17,6 +17,15 @@ const recorder = require('node-record-lpcm16');
 const speech = require('@google-cloud/speech');
 const speechClient = new speech.SpeechClient();
 
+// Google TTS
+const textToSpeech = require('@google-cloud/text-to-speech');
+const fs = require('fs');
+const util = require('util');
+
+const ttsClient = new textToSpeech.TextToSpeechClient();
+
+const player = require('play-sound')(opts = {})
+
 // SSDP Server
 var Server = require('node-ssdp').Server
     , ssdpServer = new Server({
@@ -28,9 +37,6 @@ var Server = require('node-ssdp').Server
 
 // http Server
 const http = require('http');
-
-// File System
-fs = require('fs');
 
 let displayName, email, uid, providerData;
 const firebaseConfig = require('./firebase_config');
@@ -177,6 +183,7 @@ function loginFirebase(id_token) {
     });
 }
 
+// Google Speech Recorder
 function GSrecord() {
     recorder
         .record({
@@ -192,6 +199,7 @@ function GSrecord() {
         .pipe(recognizeStream);
 }
 
+// SSDP Server
 function startSSDP(user_code) {
     var string;
     string =        "<response>\n" +
@@ -266,6 +274,32 @@ function startSSDP(user_code) {
                 });
     }).listen(8080);
 
+}
+
+async function ttsStart() {
+    // The text to synthesize
+    const text = 'hello, world!';
+
+    // Construct the request
+    const request = {
+        input: {text: text},
+        // Select the language and SSML voice gender (optional)
+        voice: {languageCode: 'ko-KR', ssmlGender: 'NEUTRAL'},
+        // select the type of audio encoding
+        audioConfig: {audioEncoding: 'MP3'},
+    };
+
+    // Performs the text-to-speech request
+    const [response] = await ttsClient.synthesizeSpeech(request);
+    // Write the binary audio content to a local file
+    const writeFile = util.promisify(fs.writeFile);
+    await writeFile('output.mp3', response.audioContent, 'binary');
+
+    console.log('Audio content written to file: output.mp3');
+
+    var audio = player.play('output.mp3', function(err){
+        if (err && !err.killed) throw err
+    })
 }
 
 
