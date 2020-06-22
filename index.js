@@ -154,7 +154,7 @@ function getUserId() {
     }, function(error, response, body){
         const obj = JSON.parse(body);
         // console.log(body);
-        console.log(obj.id_token);
+        // console.log(obj.id_token);
         loginFirebase(obj.id_token);
     });
 }
@@ -221,7 +221,7 @@ function startSSDP(user_code) {
                     "  </body>\n" +
                     "</response>";
 
-    console.log(string);
+    console.log("인증 코드: " + user_code);
 
     fs.writeFile('./user_code.xml', string, 'utf8', function(error, data){
         if (error) {
@@ -302,7 +302,8 @@ async function ttsStart(text) {
     const writeFile = util.promisify(fs.writeFile);
     await writeFile('output.mp3', response.audioContent, 'binary');
 
-    console.log('Audio content written to file: output.mp3');
+    // console.log('Audio content written to file: output.mp3');
+    console.log("Response: " + text);
 
     player.play('output.mp3', function(err){
         if (err) throw err
